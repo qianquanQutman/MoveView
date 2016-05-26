@@ -4,6 +4,7 @@
 ![moveView.gif](http://upload-images.jianshu.io/upload_images/1428756-b7db64fdcfe9f7d0.gif?imageMogr2/auto-orient/strip)
 
 跟随手指移动主要用了两个方法
+
     - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
         UITouch *touch = [touches anyObject];
         self.black.center = [touch locationInView:self];
@@ -18,11 +19,10 @@
 
     UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
 
-    if (CGPathContainsPoint(path.CGPath, NULL, [touch locationInView:self], NO)) {
-        
-        self.black.center = [touch locationInView:self];
-        
-    }
+    if (CGPathContainsPoint(path.CGPath, NULL, [touch locationInView:self], NO)) {
+    	self.black.center = [touch locationInView:self];
+    }
+    
 这样做还有一个缺点：手指移动出圆范围内黑色view就停止不动了。我们的目标是，黑色view不会出圆的范围，但是能跟随手指有角度的移动。
 博主大学没好好学导致把高中数学忘得差不多了，三角函数的用法也一个不会用了。
 于是画了一个图来分析：
@@ -33,47 +33,27 @@
 根据相似三角形来计算交点的坐标，最后代码：
 
     - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    
-      UITouch *touch = [touches anyObject];
-    
-      UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
-
-      if (CGPathContainsPoint(path.CGPath, NULL, [touch locationInView:self], NO)) {
-        
-        self.black.center = [touch locationInView:self];
-        
-      }
-    
+    	UITouch *touch = [touches anyObject];
+    	UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
+    	if (CGPathContainsPoint(path.CGPath, NULL, [touch locationInView:self], NO)) {
+    		self.black.center = [touch locationInView:self];
+    	}
     }
 
     - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    
-      CGFloat r = self.bounds.size.width / 2;
-    
-      CGPoint center = CGPointMake(r, r);
-    
-      UITouch *touch = [touches anyObject];
-    
-      CGPoint pointL = [touch locationInView:self];
-
-    
-      UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
-    
-      if (CGPathContainsPoint(path.CGPath, NULL, [touch locationInView:self], NO)) {
-
-        self.black.center = [touch locationInView:self];
-        
-      }else{
-        
-        CGFloat juli = sqrt(pow(center.x - pointL.x, 2) + pow(pointL.y - center.y, 2));
-        
-        CGFloat x = center.x - r / juli * (center.x - pointL.x);
-        CGFloat y = center.y + r / juli * (pointL.y - center.y);
-
-        self.black.center = CGPointMake(x, y);
-
-      }
-
+    	CGFloat r = self.bounds.size.width / 2;
+    	CGPoint center = CGPointMake(r, r);
+    	UITouch *touch = [touches anyObject];
+    	CGPoint pointL = [touch locationInView:self];
+    	UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
+    	if (CGPathContainsPoint(path.CGPath, NULL, [touch locationInView:self], NO)) {
+    		self.black.center = [touch locationInView:self];
+    	}else{
+    		CGFloat juli = sqrt(pow(center.x - pointL.x, 2) + pow(pointL.y - center.y, 2));
+    		CGFloat x = center.x - r / juli * (center.x - pointL.x);
+    		CGFloat y = center.y + r / juli * (pointL.y - center.y);
+    		self.black.center = CGPointMake(x, y);
+    	}
     }
 
 ---
