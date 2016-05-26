@@ -17,7 +17,7 @@
     UITouch *touch = [touches anyObject];
     
     UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
-    
+
     if (CGPathContainsPoint(path.CGPath, NULL, [touch locationInView:self], NO)) {
         
         self.black.center = [touch locationInView:self];
@@ -36,6 +36,7 @@
     UITouch *touch = [touches anyObject];
     
     CGPoint pointL = [touch locationInView:self];
+
     
     UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
     
@@ -45,18 +46,14 @@
         
     }else{
         
+        // 圆心到圆外触摸点的距离
+        CGFloat distance = sqrt(pow(center.x - pointL.x, 2) + pow(pointL.y - center.y, 2));
         
-        
-        CGFloat juli = sqrt(pow(center.x - pointL.x, 2) + pow(pointL.y - center.y, 2));
-        
-        CGFloat x = center.x - r / juli * (center.x - pointL.x);
-        CGFloat y = center.y + r / juli * (pointL.y - center.y);
-        
-        
-        
-        
+        CGFloat x = center.x - r / distance * (center.x - pointL.x);
+        CGFloat y = center.y + r / distance * (pointL.y - center.y);
+
         self.black.center = CGPointMake(x, y);
-//        NSLog(@"%@", NSStringFromCGPoint(self.black.center));
+
     }
 
 }
@@ -69,23 +66,7 @@
     self.layer.borderWidth = 1;
     self.black.center = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
 
-    
 }
-
-//- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
-//    
-//    UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
-//    
-//    NSLog(@"%@", NSStringFromCGPoint(point));
-//    
-//    if (CGPathContainsPoint(path.CGPath, NULL, point, NO)) {
-//        
-//        return self;
-//    }
-//    
-//    return self.superview;
-//}
-
 
 
 
