@@ -3,6 +3,8 @@
 ------
 ![moveView.gif](http://upload-images.jianshu.io/upload_images/1428756-b7db64fdcfe9f7d0.gif?imageMogr2/auto-orient/strip)
 
+![colorPicker.gif](http://upload-images.jianshu.io/upload_images/1428756-50d4f32042ed8b55.gif?imageMogr2/auto-orient/strip)
+
 跟随手指移动主要用了两个方法
 
     - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
